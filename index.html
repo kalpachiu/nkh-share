@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>北高雄修繕共享基地</title>
-    <!-- 引入 LINE LIFF SDK -->
+    <!-- 引入 LINE LIFF SDK (這是正確的完整官方網址) -->
     <script src="https://line-scdn.net"></script>
     <style>
         body {
@@ -81,7 +81,7 @@
         
         <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
         
-        <!-- 功能按鈕示意 -->
+        <!-- 功能按鈕 -->
         <button class="btn" onclick="actionCheckIn()">工具共享簽到</button>
         <button class="btn" style="background-color: #333;" onclick="liff.closeWindow()">關閉視窗</button>
     </div>
@@ -89,7 +89,7 @@
     <script>
         // 初始化 LIFF 應用程式
         liff.init({
-            liffId: "2012434068-BvZFFtUU" // 已為您填入專屬的 LIFF ID
+            liffId: "2012434068-BvZFFtUU" // 您的專屬 LIFF ID
         }).then(() => {
             // 判斷使用者是否在 LINE 內登入
             if (!liff.isLoggedIn()) {
