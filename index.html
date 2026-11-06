@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>北高雄修繕共享基地</title>
-    <!-- 引入 LINE LIFF SDK (這是正確的完整官方網址) -->
-<script src="https://line-scdn.net"></script>
+    <script src="https://line-scdn.net"></script>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -70,10 +69,8 @@
 </head>
 <body>
 
-    <!-- 載入中畫面 -->
     <div id="loading">基底連線中，請稍候...</div>
 
-    <!-- 主要內容卡片（預設隱藏） -->
     <div class="card" id="app-card" style="display: none;">
         <img id="user-avatar" class="avatar" src="" alt="大頭貼">
         <h1 id="user-name">社員</h1>
@@ -81,39 +78,32 @@
         
         <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
         
-        <!-- 功能按鈕 -->
         <button class="btn" onclick="actionCheckIn()">工具共享簽到</button>
         <button class="btn" style="background-color: #333;" onclick="liff.closeWindow()">關閉視窗</button>
     </div>
 
     <script>
-        // 初始化 LIFF 應用程式
         liff.init({
-            liffId: "2012434068-BvZFFtUU" // 您的專屬 LIFF ID
+            liffId: "2012434068-BvZFFtUU"
         }).then(() => {
-            // 判斷使用者是否在 LINE 內登入
             if (!liff.isLoggedIn()) {
-                liff.login(); // 引導登入
+                liff.login();
             } else {
-                // 成功登入，抓取個人資料
                 liff.getProfile().then(profile => {
-                    // 隱藏載入提示，顯示應用程式
                     document.getElementById('loading').style.display = 'none';
                     document.getElementById('app-card').style.display = 'block';
                     
-                    // 帶入 LINE 資料
                     document.getElementById('user-name').innerText = profile.displayName;
                     document.getElementById('user-avatar').src = profile.pictureUrl;
                 }).catch(err => {
-                    console.error('抓取資料失敗', err);
+                    console.error(err);
                 });
             }
         }).catch(err => {
             document.getElementById('loading').innerText = '系統初始化失敗，請重新開啟。';
-            console.error('LIFF 初始化失敗', err);
+            console.error(err);
         });
 
-        // 點擊簽到按鈕的動作
         function actionCheckIn() {
             alert('簽到功能觸發成功！未來這裡可以連動 Google 表單或資料庫喔！');
         }
