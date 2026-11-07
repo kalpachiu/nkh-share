@@ -79,35 +79,33 @@
         <button class="btn" style="background-color: #333;" onclick="liff.closeWindow()">關閉視窗</button>
     </div>
 
+    <!-- ✅ 官方 LIFF SDK（已逐字核對官方文件） -->
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/versions/2.31.1/sdk.js"></script>
+
     <script>
-        // 用拼湊網址的方式動態載入 SDK，徹底避開 AI 系統的屏蔽
-        const a = "https://static.";
-        const b = "line-cdn.net/";
-        const c = "liff/edge/2/sdk.js";
-        const script = document.createElement('script');
-        script.src = a + b + c;
-        
-        script.onload = function() {
-            // SDK 載入成功後執行初始化
-            liff.init({
-                liffId: "2012434068-BvZFFtUU"
-            }).then(() => {
+        liff.init({ liffId: "2012434068-BvZFFtUU" })
+            .then(() => {
                 if (!liff.isLoggedIn()) {
-                    liff.login();
+                    liff.login(); // 會導向 LINE 登入頁，之後自動回來
                 } else {
-                    liff.getProfile().then(profile => {
-                        document.getElementById('loading').style.display = 'none';
-                        document.getElementById('app-card').style.display = 'block';
-                        document.getElementById('user-name').innerText = profile.displayName;
-                        document.getElementById('user-avatar').src = profile.pictureUrl;
-                    });
+                    return liff.getProfile();
                 }
-            }).catch(err => {
-                document.getElementById('loading').innerText = 'LINE 系統連線失敗。';
+            })
+            .then(profile => {
+                if (!profile) return; // 正在導向登入頁
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('app-card').style.display = 'block';
+                document.getElementById('user-name').innerText = profile.displayName || '社員';
+                // 部分帳號沒有大頭貼，避免圖片破圖
+                const avatar = document.getElementById('user-avatar');
+                avatar.src = profile.pictureUrl || '';
+                avatar.style.display = profile.pictureUrl ? 'block' : 'none';
+            })
+            .catch(err => {
+                document.getElementById('loading').innerText =
+                    'LINE 系統連線失敗：' + (err && err.message ? err.message : '未知錯誤');
+                console.error('LIFF init error:', err);
             });
-        };
-        
-        document.head.appendChild(script);
 
         function actionCheckIn() {
             alert('北高雄修繕基地：簽到功能觸發成功！');
